@@ -1,19 +1,27 @@
 import { usePlane } from '@react-three/cannon'
-import { useTexture } from '@react-three/drei'
-import { RepeatWrapping } from 'three'
+import { useNormalTexture } from '@react-three/drei'
 
 export default function Ground(props) {
   const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], ...props }))
 
-  const texture = useTexture('../images/grass.jpeg')
-  texture.wrapS = RepeatWrapping
-  texture.wrapT = RepeatWrapping
-  texture.repeat.set(240, 240)
+  const [normalMap] = useNormalTexture(
+    32, // index of the normal texture - https://github.com/emmelleppi/normal-maps/blob/master/normals.json
+    // second argument is texture attributes
+    {
+      offset: [0, 0],
+      repeat: [100, 100],
+      anisotropy: 8
+    }
+  )
 
   return (
     <mesh ref={ref} receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
-      <meshStandardMaterial attach="material" map={texture} color="green" />
+      <planeBufferGeometry attach="geometry" args={[50, 50]} />
+      <meshStandardMaterial
+        attach="material"
+        normalMap={normalMap}
+        color="#dadb84"
+      />
     </mesh>
   )
 }
