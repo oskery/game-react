@@ -1,22 +1,20 @@
 import { Canvas } from '@react-three/fiber'
-import { Vector3 } from 'three'
-import { Sky } from '@react-three/drei'
+import { Sky, PointerLockControls } from '@react-three/drei'
 import { Physics } from '@react-three/cannon'
-import { Ground, Player, Camera } from './components/'
-
-//import { useController } from './hooks/useController'
+import { Ground, Player, Cube } from './components/'
 
 function App() {
   return (
-    <Canvas shadows colorManagement camera={[0, 1, 0]}>
-      <Camera fov={50} />
-      <Sky sunPosition={new Vector3(100, 10, 100)} />
+    <Canvas shadows colorManagement camera={{ fov: 45 }}>
+      <Sky sunPosition={[100, 20, 100]} />
       <ambientLight intensity={0.3} />
       <pointLight castShadow intensity={0.8} position={[100, 100, 100]} />
-      <Physics>
+      <Physics gravity={[0, -30, 0]}>
+        <Cube position={[0, 1, -10]} />
         <Ground />
         <Player />
       </Physics>
+      <PointerLockControls />
     </Canvas>
   )
 }

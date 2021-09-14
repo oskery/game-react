@@ -12,7 +12,7 @@ export default function Ground(props) {
 
   return (
     <mesh ref={ref} receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[100, 100]} />
+      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
       <meshStandardMaterial attach="material" map={texture} color="green" />
     </mesh>
   )
