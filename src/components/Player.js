@@ -3,17 +3,19 @@ import { useSphere } from '@react-three/cannon'
 import { useThree, useFrame } from '@react-three/fiber'
 import { useController } from '../hooks/useController'
 import { Vector3 } from 'three'
-import { PerspectiveCamera } from '@react-three/drei'
+import { PointerLockControls } from '@react-three/drei'
 
 const SPEED = 6
 
 export default function Player(props) {
-  const camera = useRef()
+  const { camera } = useThree()
   const { moveForward, moveBackward, moveLeft, moveRight, jump } =
     useController()
+
   const [ref, api] = useSphere(() => ({
     mass: 1,
     type: 'Dynamic',
+    position: [0, 10, 0],
     ...props
   }))
 
@@ -23,7 +25,7 @@ export default function Player(props) {
   }, [api.velocity])
 
   useFrame(() => {
-    camera.current.position.copy(ref.current.position)
+    camera.position.copy(ref.current.position)
     const direction = new Vector3()
 
     const frontVector = new Vector3(
@@ -50,9 +52,8 @@ export default function Player(props) {
   })
   return (
     <>
-      <PerspectiveCamera ref={camera} makeDefault position={[0, 33, 10]}>
-        <mesh ref={ref} />
-      </PerspectiveCamera>
+      <PointerLockControls />
+      <mesh ref={ref} />
     </>
   )
 }
